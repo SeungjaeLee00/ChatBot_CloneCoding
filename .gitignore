@@ -1,4 +1,5 @@
 node_modules
+.chatbot-app-test/node_modules
 
 dev.js
 ./server/config/dev.js
