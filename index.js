@@ -1,11 +1,17 @@
-const express = require('express')
-const app = express()
-const port = 4000
+const express = require("express");
+const path = require("path");
+const bodyParser = require("body-parser");
+const app = express();
 
-app.get('/', (req, res) => {
-    res.send('챗봇 사이트 만들기 시작')
-})
+const config = require("./server/config/keys");
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+app.use('/api/dialogflow', require('./server/routes/dialogflow'));
+
+const port = process.env.PORT || 4000;
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
+  console.log(`Server Running at ${port}`)
+});
