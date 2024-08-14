@@ -1,23 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Typography } from "antd";
+import Icon from "@ant-design/icons"; // On upgrading the version of Ant Design to v4, Icon is no longer exported from antd package. Instand we use @ant-design/icons.
+import Chatbot from './Chatbot/Chatbot';
+const { Title } = Typography;
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div
+        style={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}
+      >
+        <Title level={2}>
+          CHAT BOT APP&nbsp;
+          <Icon type="robot" />
+        </Title>
+      </div>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <Chatbot />
+      </div>
     </div>
   );
 }
