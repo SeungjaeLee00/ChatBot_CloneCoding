@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Axios from "axios";
 
 function Chatbot() {
+  useEffect(() => {
+    eventQuery("welcome");
+  }, []);
+
+  // Text Query
   const textQuery = async (text) => {
     // 내가 보낸 메세지 보관
     let conversation = {
@@ -20,7 +25,10 @@ function Chatbot() {
 
     try {
       // text query route에 request 전송
-      const response = await Axios.post("api/dialogflow/textQuery", textQueryVariables);
+      const response = await Axios.post(
+        "api/dialogflow/textQuery",
+        textQueryVariables
+      );
       const content = response.data.fulfillmentMessages[0];
 
       conversation = {
@@ -35,6 +43,42 @@ function Chatbot() {
       console.log(conversation);
     } catch (error) {
       conversation = {
+        who: "bot",
+        content: {
+          text: {
+            text: "Error juse occured, please check the problem",
+          },
+        },
+      };
+      console.log(conversation);
+    }
+  };
+
+  // Event Query
+  const eventQuery = async (event) => {
+    const eventQueryVariables = {
+      event,
+    };
+
+    try {
+      const response = await Axios.post(
+        "api/dialogflow/eventQuery",
+        eventQueryVariables
+      );
+      const content = response.data.fulfillmentMessages[0];
+
+      let conversation = {
+        who: "bot",
+        content: {
+          text: {
+            text: content,
+          },
+        },
+      };
+
+      console.log(conversation);
+    } catch (error) {
+      let conversation = {
         who: "bot",
         content: {
           text: {
