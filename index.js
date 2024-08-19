@@ -9,7 +9,7 @@ const config = require("./server/config/keys");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// cors error 해결
+// cors error 해결, https://velog.io/@wiostz98kr/React-Express-CORS-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0 참고함
 app.use(cors({ origin: 'http://localhost:3000'}));
 
 // app.use를 통해 Text Query Route, Event Query Route가 있는 route > dialogflow.js을 라우팅

@@ -1,14 +1,16 @@
 import React, { useEffect } from "react";
 import Axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { saveMessage } from "../_actions/message_actions";
+import { RobotOutlined, SmileFilled } from "@ant-design/icons";
+import { List, Avatar } from "antd";
 
 function Chatbot() {
   const dispatch = useDispatch();
+  const messagesFromRedux = useSelector((state) => state.message.messages);
 
   useEffect(() => {
     eventQuery("greeting");
-    // eslint-disable-next-line 
   }, []);
 
   // Text Query
@@ -23,7 +25,7 @@ function Chatbot() {
     };
 
     dispatch(saveMessage(conversation));
-    console.log("text I send", conversation);
+    // console.log("text I send", conversation);
 
     const textQueryVariables = {
       text: text,
@@ -41,7 +43,7 @@ function Chatbot() {
         who: "bot",
         content: {
           text: {
-            text: content,
+            text: content.text ? content.text.text[0] : "No text found",
           },
         },
       };
@@ -59,7 +61,7 @@ function Chatbot() {
       };
 
       dispatch(saveMessage(conversation));
-      console.log(conversation);
+      // console.log(conversation);
     }
   };
 
@@ -80,13 +82,14 @@ function Chatbot() {
         who: "bot",
         content: {
           text: {
-            text: content,
+            // text: content,
+            text: content.text ? content.text.text[0] : "No text found",
           },
         },
       };
 
       dispatch(saveMessage(conversation));
-      console.log(conversation);
+      // console.log(conversation);
     } catch (error) {
       let conversation = {
         who: "bot",
@@ -98,7 +101,7 @@ function Chatbot() {
       };
 
       dispatch(saveMessage(conversation));
-      console.log(conversation);
+      // console.log(conversation);
     }
   };
 
@@ -112,6 +115,35 @@ function Chatbot() {
       e.target.value = "";
     }
   };
+
+  const renderOneMessage = (message, i) => {
+    console.log("message", message);
+    const AvatarSrc =
+      message.who === "bot" ? <RobotOutlined /> : <SmileFilled />;
+
+    return (
+      <div>
+        <List.Item style={{ padding: "1rem", listStyleType: 'none' }}>
+          <List.Item.Meta
+            avatar={<Avatar icon={AvatarSrc} />}
+            title={message.who}
+            description={message.content.text.text}  
+            />
+        </List.Item>
+      </div>
+    );
+  };
+
+  const renderMessage = (returnedMessages) => {
+    if (returnedMessages) {
+      return returnedMessages.map((message, i) => {
+        return renderOneMessage(message, i);
+      });
+    } else {
+      return null;
+    }
+  };
+
   return (
     <div
       style={{
@@ -121,7 +153,9 @@ function Chatbot() {
         borderRadius: "7px",
       }}
     >
-      <div style={{ height: 639, width: "100%", overflow: "auto" }}></div>
+      <div style={{ height: 639, width: "100%", overflow: "auto" }}>
+        {renderMessage(messagesFromRedux)}
+      </div>
 
       <input
         style={{
