@@ -1,14 +1,18 @@
 import React, { useEffect } from "react";
 import Axios from "axios";
+import { useDispatch } from "react-redux";
+import { saveMessage } from "../_actions/message_actions";
 
 function Chatbot() {
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    eventQuery("welcome");
+    eventQuery("greeting");
+    // eslint-disable-next-line 
   }, []);
 
   // Text Query
   const textQuery = async (text) => {
-    // 내가 보낸 메세지 보관
     let conversation = {
       who: "user",
       content: {
@@ -18,15 +22,17 @@ function Chatbot() {
       },
     };
 
-    // chatbot이 보낸 메세지 보관
+    dispatch(saveMessage(conversation));
+    console.log("text I send", conversation);
+
     const textQueryVariables = {
       text: text,
     };
 
     try {
-      // text query route에 request 전송
       const response = await Axios.post(
-        "api/dialogflow/textQuery",
+        // 왜 url을 다 써야 응답하지
+        "http://localhost:4000/api/dialogflow/textQuery",
         textQueryVariables
       );
       const content = response.data.fulfillmentMessages[0];
@@ -40,6 +46,7 @@ function Chatbot() {
         },
       };
 
+      dispatch(saveMessage(conversation));
       console.log(conversation);
     } catch (error) {
       conversation = {
@@ -50,6 +57,8 @@ function Chatbot() {
           },
         },
       };
+
+      dispatch(saveMessage(conversation));
       console.log(conversation);
     }
   };
@@ -62,7 +71,7 @@ function Chatbot() {
 
     try {
       const response = await Axios.post(
-        "api/dialogflow/eventQuery",
+        "http://localhost:4000/api/dialogflow/eventQuery",
         eventQueryVariables
       );
       const content = response.data.fulfillmentMessages[0];
@@ -76,6 +85,7 @@ function Chatbot() {
         },
       };
 
+      dispatch(saveMessage(conversation));
       console.log(conversation);
     } catch (error) {
       let conversation = {
@@ -86,6 +96,8 @@ function Chatbot() {
           },
         },
       };
+
+      dispatch(saveMessage(conversation));
       console.log(conversation);
     }
   };
