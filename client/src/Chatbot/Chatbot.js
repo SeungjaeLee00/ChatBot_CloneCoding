@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import Axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { saveMessage } from "../_actions/message_actions";
-import { RobotOutlined, SmileFilled } from "@ant-design/icons";
-import { List, Avatar } from "antd";
+import Message from "./Sections/Message";
 
 function Chatbot() {
   const dispatch = useDispatch();
@@ -116,28 +115,16 @@ function Chatbot() {
     }
   };
 
-  const renderOneMessage = (message, i) => {
+  const renderOneMessage = (message) => {
     console.log("message", message);
-    const AvatarSrc =
-      message.who === "bot" ? <RobotOutlined /> : <SmileFilled />;
 
-    return (
-      <div>
-        <List.Item style={{ padding: "1rem", listStyleType: 'none' }}>
-          <List.Item.Meta
-            avatar={<Avatar icon={AvatarSrc} />}
-            title={message.who}
-            description={message.content.text.text}  
-            />
-        </List.Item>
-      </div>
-    );
+    return <Message who={message.who} text={message.content.text.text} />;
   };
 
   const renderMessage = (returnedMessages) => {
     if (returnedMessages) {
-      return returnedMessages.map((message, i) => {
-        return renderOneMessage(message, i);
+      return returnedMessages.map((message) => {
+        return renderOneMessage(message);
       });
     } else {
       return null;
