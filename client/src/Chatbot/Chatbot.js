@@ -45,7 +45,7 @@ function Chatbot() {
       //     },
       //   },
       // };
-      
+
       // Custom payload가 있는지 확인
       if (content.payload) {
         conversation = {
