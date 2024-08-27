@@ -1,6 +1,6 @@
 import React from "react";
 import { Typography } from "antd";
-import { RobotOutlined } from "@ant-design/icons"; // On upgrading the version of Ant Design to v4, Icon is no longer exported from antd package. Instand we use @ant-design/icons.
+import { RobotOutlined } from "@ant-design/icons";
 import Chatbot from "./Chatbot/Chatbot";
 const { Title } = Typography;
 
@@ -12,7 +12,7 @@ function App() {
       >
         <Title level={2}>
           CHAT BOT APP&nbsp;
-          <RobotOutlined />
+          {/* <RobotOutlined /> */}
         </Title>
       </div>
       <div style={{ display: "flex", justifyContent: "center" }}>

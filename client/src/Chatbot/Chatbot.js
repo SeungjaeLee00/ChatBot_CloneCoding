@@ -15,7 +15,7 @@ function Chatbot() {
   // Text Query
   const textQuery = async (text) => {
     let conversation = {
-      who: "user",
+      who: "Me",
       content: {
         text: {
           text: text,
@@ -24,7 +24,6 @@ function Chatbot() {
     };
 
     dispatch(saveMessage(conversation));
-    // console.log("text I send", conversation);
 
     const textQueryVariables = {
       text: text,
@@ -38,20 +37,47 @@ function Chatbot() {
       );
       const content = response.data.fulfillmentMessages[0];
 
-      conversation = {
-        who: "bot",
-        content: {
-          text: {
-            text: content.text ? content.text.text[0] : "No text found",
+      // conversation = {
+      //   who: "Chat Bot",
+      //   content: {
+      //     text: {
+      //       text: content.text ? content.text.text[0] : "No text found",
+      //     },
+      //   },
+      // };
+      
+      // Custom payload가 있는지 확인
+      if (content.payload) {
+        conversation = {
+          who: "Chat Bot",
+          content: {
+            payload: content.payload.fields,
           },
-        },
-      };
+        };
+      } else if (content.text) {
+        conversation = {
+          who: "Chat Bot",
+          content: {
+            text: {
+              text: content.text.text[0],
+            },
+          },
+        };
+      } else {
+        conversation = {
+          who: "Chat Bot",
+          content: {
+            text: {
+              text: "No text found",
+            },
+          },
+        };
+      }
 
       dispatch(saveMessage(conversation));
-      console.log(conversation);
     } catch (error) {
       conversation = {
-        who: "bot",
+        who: "Chat Bot",
         content: {
           text: {
             text: "Error juse occured, please check the problem",
@@ -78,10 +104,9 @@ function Chatbot() {
       const content = response.data.fulfillmentMessages[0];
 
       let conversation = {
-        who: "bot",
+        who: "Chat Bot",
         content: {
           text: {
-            // text: content,
             text: content.text ? content.text.text[0] : "No text found",
           },
         },
@@ -91,7 +116,7 @@ function Chatbot() {
       // console.log(conversation);
     } catch (error) {
       let conversation = {
-        who: "bot",
+        who: "Chat Bot",
         content: {
           text: {
             text: "Error juse occured, please check the problem",
@@ -118,7 +143,12 @@ function Chatbot() {
   const renderOneMessage = (message) => {
     console.log("message", message);
 
-    return <Message who={message.who} text={message.content.text.text} />;
+    // 메세지 종류 구분을 위한 조건 제공
+
+    // 일반 메세지
+    // return <Message who={message.who} text={message.content.text.text} />;
+
+    // 카드 메세지
   };
 
   const renderMessage = (returnedMessages) => {
@@ -153,7 +183,7 @@ function Chatbot() {
           padding: "5px",
           fontSize: "1rem",
         }}
-        placeholder="Send a message..."
+        placeholder="Send a message... "
         onKeyDown={keyPressHandler}
         type="text"
       />

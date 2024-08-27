@@ -1,9 +1,9 @@
-import { RobotOutlined, SmileFilled } from "@ant-design/icons";
-import { List, Avatar } from "antd";
+import { StarOutlined, RobotOutlined } from "@ant-design/icons";
+import { Avatar } from "antd";
 import React from "react";
 
 function Message(props) {
-  const AvatarSrc = props.who === "bot" ? <RobotOutlined /> : <SmileFilled />;
+  const AvatarSrc = props.who === "Chat Bot" ? <RobotOutlined />: <StarOutlined />;
 
   return (
     <div style={{ display: "flex", alignItems: "flex-start", padding: "1rem" }}>
