@@ -3,6 +3,9 @@ import Axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { saveMessage } from "../_actions/message_actions";
 import Message from "./Sections/Message";
+import Card from "./Sections/Card";
+import { StarOutlined, RobotOutlined } from "@ant-design/icons";
+import { Avatar } from "antd";
 
 function Chatbot() {
   const dispatch = useDispatch();
@@ -140,15 +143,42 @@ function Chatbot() {
     }
   };
 
+  const renderCards = (cards) => {
+    return cards.map((card, i) => <Card key={i} cardInfo={card.structValue} />);
+  };
+
   const renderOneMessage = (message) => {
     console.log("message", message);
 
     // 메세지 종류 구분을 위한 조건 제공
 
-    // 일반 메세지
-    // return <Message who={message.who} text={message.content.text.text} />;
-
-    // 카드 메세지
+    if (message.content && message.content.text && message.content.text.text) {
+      // 일반 메세지
+      return <Message who={message.who} text={message.content.text.text} />;
+    } else if (message.content && message.content.payload.card) {
+      // 카드 메세지
+      const AvatarSrc =
+        message.who === "Chat Bot" ? <RobotOutlined /> : <StarOutlined />;
+      return (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            padding: "1rem",
+          }}
+        >
+          <div style={{ marginRight: "1rem" }}>
+            <Avatar icon={AvatarSrc} />
+          </div>
+          <div>
+            <div style={{ fontWeight: "bold" }}>{message.who}</div>
+            <div>
+              {renderCards(message.content.payload.card.listValue.values)}
+            </div>
+          </div>
+        </div>
+      );
+    }
   };
 
   const renderMessage = (returnedMessages) => {

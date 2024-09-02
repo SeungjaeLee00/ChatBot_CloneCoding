@@ -3,7 +3,8 @@ import { Avatar } from "antd";
 import React from "react";
 
 function Message(props) {
-  const AvatarSrc = props.who === "Chat Bot" ? <RobotOutlined />: <StarOutlined />;
+  const AvatarSrc =
+    props.who === "Chat Bot" ? <RobotOutlined /> : <StarOutlined />;
 
   return (
     <div style={{ display: "flex", alignItems: "flex-start", padding: "1rem" }}>
