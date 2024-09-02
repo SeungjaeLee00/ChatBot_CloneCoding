@@ -6,7 +6,7 @@
 
 ## 1. Action & Parameters
 
-<imag src="https://github.com/user-attachments/assets/a8e22e79-c6c4-458d-b13b-a0e51686bcaf">
+<img src="https://github.com/user-attachments/assets/a8e22e79-c6c4-458d-b13b-a0e51686bcaf">
 
 ## 2. Card messages
 
